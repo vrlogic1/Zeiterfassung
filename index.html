@@ -665,13 +665,28 @@
 
         // ===== INIT =====
         window.addEventListener('load', async () => {
-            await initMSAL();
+            console.log('=== App Loading ===');
+            console.log('Employees at start:', employees);
+            console.log('Christian exists:', 'Christian' in employees);
+            console.log('Christian password:', employees.Christian?.password);
             
-            // Try to load from OneDrive first
-            const loaded = await loadFromOneDrive();
-            if (!loaded) {
-                console.log('No OneDrive data, using defaults');
+            try {
+                await initMSAL();
+                console.log('MSAL initialized');
+                
+                // Try to load from OneDrive first (non-blocking)
+                const loaded = await loadFromOneDrive();
+                if (!loaded) {
+                    console.log('No OneDrive data, using defaults');
+                }
+                
+                console.log('Employees after load:', Object.keys(employees));
+            } catch (error) {
+                console.error('Init error:', error);
+                // Even if OneDrive fails, Christian should work
             }
+            
+            console.log('=== App Ready ===');
         });
 
         // ===== LOGIN =====
@@ -679,16 +694,28 @@
             const name = document.getElementById('loginName').value.trim();
             const password = document.getElementById('loginPassword').value;
 
+            console.log('=== Login Attempt ===');
+            console.log('Name:', name);
+            console.log('Password length:', password.length);
+            console.log('Available employees:', Object.keys(employees));
+            console.log('Employee data for', name, ':', employees[name]);
+
             if (!name || !password) {
                 alert('Bitte Name und Passwort eingeben!');
                 return;
             }
 
-            if (!employees[name] || employees[name].password !== password) {
-                alert('Falscher Name oder Passwort!');
+            if (!employees[name]) {
+                alert('Benutzer "' + name + '" nicht gefunden!\n\nVerfügbare Benutzer: ' + Object.keys(employees).join(', '));
                 return;
             }
 
+            if (employees[name].password !== password) {
+                alert('Falsches Passwort für "' + name + '"!');
+                return;
+            }
+
+            console.log('✅ Login successful!');
             currentUser = name;
             document.getElementById('loginScreen').classList.add('hidden');
             document.getElementById('mainApp').classList.remove('hidden');
