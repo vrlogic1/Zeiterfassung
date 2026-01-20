@@ -758,7 +758,7 @@
             return diffMinutes / 60;
         }
 
-        function addTimeEntry() {
+        async function addTimeEntry() {
             const date = document.getElementById('workDate').value;
             const start = document.getElementById('startTime').value;
             const end = document.getElementById('endTime').value;
@@ -869,7 +869,7 @@
             document.getElementById('newEmployeeAdmin').checked = false;
         }
 
-        function addNewEmployee() {
+        async function addNewEmployee() {
             const name = document.getElementById('newEmployeeName').value.trim();
             const password = document.getElementById('newEmployeePassword').value;
             const isAdmin = document.getElementById('newEmployeeAdmin').checked;
@@ -895,7 +895,7 @@
             alert(`✅ Mitarbeiter "${name}" wurde angelegt!`);
         }
 
-        function deleteEmployee(name) {
+        async function deleteEmployee(name) {
             if (name === currentUser) {
                 alert('Sie können sich nicht selbst löschen!');
                 return;
