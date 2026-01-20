@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zeiterfassung</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@azure/msal-browser@3.0.0/lib/msal-browser.min.js"></script>
+    <script src="https://alcdn.msauth.net/browser/2.38.0/js/msal-browser.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -453,7 +453,6 @@
         async function initMSAL() {
             try {
                 msalInstance = new msal.PublicClientApplication(msalConfig);
-                await msalInstance.initialize();
                 
                 // Handle redirect response
                 const response = await msalInstance.handleRedirectPromise();
